@@ -53,16 +53,10 @@ const profileSlice = createSlice({
       .addCase(getProfile.rejected, (state, action) => {
         state.status = 'failed';
         const errorPayload = action.payload;
-        // Verificar el tipo de errorPayload correctamente
         if (typeof errorPayload === 'string') {
-          // Si el payload es un string, envolverlo en un objeto con 'message'
           state.error = { message: errorPayload };
-        } else if (errorPayload && typeof errorPayload === 'object' && 'message' in errorPayload) {
-          // Si es un objeto con 'message', asignarlo
-          state.error = errorPayload as ErrorPayload;
         } else {
-          // Si no tiene 'message', asignar un mensaje por defecto
-          state.error = { message: 'Hubo un problema al obtener el perfil' };
+          state.error = { message: 'Error desconocido al obtener perfil' };
         }
       })
       .addCase(updateProfile.pending, (state) => {
@@ -70,23 +64,12 @@ const profileSlice = createSlice({
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const updatedUser = action.payload as User;
-        state.user = updatedUser;
+        // Aquí actualizas el perfil con la información actualizada
+        state.user = { ...state.user, ...action.payload.updatedUser };
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.status = 'failed';
-        const errorPayload = action.payload;
-        // Verificar el tipo de errorPayload correctamente
-        if (typeof errorPayload === 'string') {
-          // Si el payload es un string, envolverlo en un objeto con 'message'
-          state.error = { message: errorPayload };
-        } else if (errorPayload && typeof errorPayload === 'object' && 'message' in errorPayload) {
-          // Si es un objeto con 'message', asignarlo
-          state.error = errorPayload as ErrorPayload;
-        } else {
-          // Si no tiene 'message', asignar un mensaje por defecto
-          state.error = { message: 'Hubo un problema al actualizar el perfil' };
-        }
+        state.error = action.payload || 'Error desconocido al actualizar perfil';
       });
   },
 });
