@@ -1,8 +1,13 @@
 'use client';
+
 import { useSearchParams } from 'next/navigation';
-import { Note /*, Material*/ } from '@/types';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+
+import { usePatientById } from '@/hooks';
+import { addNoteToPatient, addMaterialToPatient } from '@/store/actions/patientActions';
+import { Note /*, Material*/ } from '@/types';
 
 type Props = {
   onSaved: () => void;
@@ -27,20 +32,31 @@ export default function MedicalHistoryNew({ onSaved }: Props) {
   const from = searchParams.get('from');
   const isMaterial = from === 'material';
 
+  // necesarios para guardar materiales/notas
+  const dispatch = useDispatch();
+  const { id } = usePatientById();
+
   const formik = useFormik<Note>({
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
       console.log('Datos del formulario de notas:', values);
 
-      const newNote = {
-        title: values.title,
-        date: values.date,
+      const newNote: Omit<Note, 'id'> = {
         content: values.content,
+        date: values.date,
+        title: values.title,
       };
       console.log(newNote);
 
       onSaved();
+
+      // acá es cuando se guarda la nota/material en el store
+      if (isMaterial) {
+        dispatch(addMaterialToPatient({ patientId: id, material: newNote }));
+      } else {
+        dispatch(addNoteToPatient({ patientId: id, note: newNote }));
+      }
 
       // try {
       //   const resultAction = await dispatch(createPatient(newPatient));

@@ -3,6 +3,7 @@
 
 export { default as Button } from './ui/Button';
 export { default as InputField } from './ui/InputField';
+export { ValidationError } from './ui/ValidationError';
 
 // Layouts
 export { default as DashboardLinks } from './layouts/DashboardLinks';
@@ -36,6 +37,7 @@ export { PatientProfileLorem } from './PatientProfile/PatientProfileLorem';
 export { default as MedicalHistoryHeader } from './MedicalHistory/MedicalHistoryHeader';
 export { default as MedicalHistoryList } from './MedicalHistory/MedicalHistoryList';
 export { default as MedicalHistoryNew } from './MedicalHistory/MedicalHistoryNew';
+export { default as MedicalHistoryView } from './MedicalHistory/MedicalHistoryView';
 
 // Pagination
 export { default as Pagination } from './Pagination/Pagination';
