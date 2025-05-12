@@ -24,11 +24,15 @@ export { default as PatientList } from './PatientList/PetientList';
 export { default as SeeMoreButton } from './SeeMoreButton/SeeMoreButton';
 export { default as AddPatientButton } from './AddPatientButton/AddPatientButton';
 export { default as ArchivedLink } from './ArchivedLink/ArchivedLink';
+export { default as CompletedListArchived } from './CompletedListPatients/CompletedListArchived/CompletedListArchived';
+export { default as GoBackArchived } from './ArchivedLink/GoBackArchived';
+export { default as PatientListArchived } from './PatientList/PatientListArchived/PatientListArchived';
 
 // NewPatient
 export { default as FormPatient } from './FormPatient/FormPatient';
 
 // PatientProfile
+export { EditPatientForm } from './EditPatientForm/EditPatientForm';
 export { PatientProfileHeader } from './PatientProfile/PatientProfileHeader';
 export { PatientProfileInfo } from './PatientProfile/PatientProfileInfo';
 export { PatientProfileLorem } from './PatientProfile/PatientProfileLorem';

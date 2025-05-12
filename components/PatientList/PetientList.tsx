@@ -3,12 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
-import { fetchPatients, deletePatient } from '@/store/thunks';
-import { selectFilteredPatients } from '@/store/selectors/patientSelectors';
-import { flechaAbajoLista, flechaArribaLista, puntosFiltros } from '@/public';
-
+import { fetchPatients } from '@/store/thunks';
+// import { selectFilteredPatients } from '@/store/selectors/patientSelectors';
+import { flechaAbajoLista, flechaArribaLista, puntosFiltros, Archive, Edit } from '@/public';
+import { usePathname } from 'next/navigation';
+import { newSelectFilteredPatients } from '@/store/selectors/patientSelectors';
+import Left from '../../public/icons/Left.svg';
+import Right from '../../public/icons/Right.svg';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { toggleFiled } from '@/store/actions/patientActions';
 
 interface Props {
   variant?: 'home' | 'list';
@@ -17,9 +21,15 @@ interface Props {
 export default function PatientList({ variant = 'home' }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const initialized = useSelector((state: RootState) => state.patients.initialized);
-  const patients = useSelector(selectFilteredPatients);
+  // const patients = useSelector(selectFilteredPatients);
+  // mostrar solo pacientes no archivados
+  const allPatients = useSelector(newSelectFilteredPatients);
+  const patients = allPatients.filter((p) => !p.filed);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [isListVisible, setIsListVisible] = useState(true); // Nuevo estado para manejar la visibilidad
+
+  const pathname = usePathname();
+  const isDashboardHome = pathname === '/dashboard/home';
 
   const avatars = [
     'https://randomuser.me/api/portraits/men/11.jpg',
@@ -97,78 +107,75 @@ export default function PatientList({ variant = 'home' }: Props) {
   const [desktopPage, setDesktopPage] = useState(1);
   const desktopTotalPages = Math.ceil(patients.length / 8);
 
-  const changePageDesktop = (pageNum: number) => {
-    setDesktopPage(pageNum);
-  };
+  function getPaginationRange(current: number, total: number): (number | string)[] {
+    const delta = 1;
+    const range: (number | string)[] = [];
+
+    for (let i = 1; i <= total; i++) {
+      if (i === 1 || i === total || (i >= current - delta && i <= current + delta)) {
+        range.push(i);
+      } else if (range[range.length - 1] !== '...') {
+        range.push('...');
+      }
+    }
+
+    return range;
+  }
 
   const renderPaginationDesktop = () => {
-    const pages = [];
-    const maxVisible = 5;
-    let start = Math.max(1, desktopPage - Math.floor(maxVisible / 2));
-    let end = start + maxVisible - 1;
-
-    if (end > desktopTotalPages) {
-      end = desktopTotalPages;
-      start = Math.max(1, end - maxVisible + 1);
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(
-        <button
-          key={i}
-          onClick={() => changePageDesktop(i)}
-          className={`mx-1 rounded px-2 py-1 text-sm font-medium ${
-            i === desktopPage ? 'bg-black text-white' : 'text-black underline'
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
+    const range = getPaginationRange(desktopPage, desktopTotalPages);
+    const startIndex = (desktopPage - 1) * 8;
 
     return (
       <div className="mt-4 hidden items-center justify-center lg:flex">
-        <button
-          onClick={() => desktopPage > 1 && changePageDesktop(desktopPage - 1)}
-          disabled={desktopPage === 1}
-          className="mx-2 text-sm font-medium text-black disabled:text-gray-400"
-        >
-          ← Anterior
-        </button>
-
-        {start > 1 && (
-          <>
+        <div className="flex w-full flex-row items-center justify-between space-x-1">
+          <div className="mb-6 ml-24 flex flex-row gap-x-5">
             <button
-              onClick={() => changePageDesktop(1)}
-              className="mx-1 text-sm font-medium text-black underline"
+              onClick={() => setDesktopPage(Math.max(desktopPage - 1, 1))}
+              disabled={desktopPage === 1}
+              className="flex h-10 w-[94px] items-center justify-center gap-2 rounded-lg border-white pr-1 text-sm leading-tight font-normal text-gray-600 hover:bg-gray-100 disabled:opacity-50"
             >
-              1
+              <Image src={Left} alt="Anterior" width={18} height={18} /> Anterior
             </button>
-            {start > 2 && <span className="mx-1 text-sm">...</span>}
-          </>
-        )}
 
-        {pages}
+            {range.map((page, idx) =>
+              page === '...' ? (
+                <span
+                  key={idx}
+                  className="flex h-10 w-10 items-center justify-center text-sm text-gray-500"
+                >
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={idx}
+                  onClick={() => setDesktopPage(Number(page))}
+                  className={`h-10 w-10 rounded-lg border px-[10px] py-[11px] text-center text-sm leading-tight font-normal ${
+                    desktopPage === page
+                      ? 'border-blue-600 text-blue-600'
+                      : 'border-white text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  {page}
+                </button>
+              )
+            )}
 
-        {end < desktopTotalPages && (
-          <>
-            {end < desktopTotalPages - 1 && <span className="mx-1 text-sm">...</span>}
             <button
-              onClick={() => changePageDesktop(desktopTotalPages)}
-              className="mx-1 text-sm font-medium text-black underline"
+              onClick={() => setDesktopPage(Math.min(desktopPage + 1, desktopTotalPages))}
+              disabled={desktopPage === desktopTotalPages}
+              className="flex h-10 w-[94px] items-center justify-center gap-2 rounded-lg border-white pr-1 text-sm leading-tight font-normal text-gray-600 hover:bg-gray-100 disabled:opacity-50"
             >
-              {desktopTotalPages}
+              Siguiente <Image src={Right} alt="Siguiente" width={18} height={18} />
             </button>
-          </>
-        )}
-
-        <button
-          onClick={() => desktopPage < desktopTotalPages && changePageDesktop(desktopPage + 1)}
-          disabled={desktopPage === desktopTotalPages}
-          className="mx-2 text-sm font-medium text-black disabled:text-gray-400"
-        >
-          Siguiente →
-        </button>
+          </div>
+        </div>
+        <div className="mt-[-1.5rem] mr-24">
+          <p className="h-[20px] w-[156px] text-center text-sm leading-tight font-normal text-gray-600">
+            Mostrando {startIndex + 1} - {Math.min(startIndex + 8, patients.length)} de{' '}
+            {patients.length}
+          </p>
+        </div>
       </div>
     );
   };
@@ -186,24 +193,23 @@ export default function PatientList({ variant = 'home' }: Props) {
     <>
       <div className="overflow-x-auto">
         <table className="w-screen text-left text-sm text-gray-600 lg:w-full">
-          <thead className="bg-[#F2F6FD] text-base leading-normal font-semibold text-black uppercase">
+          <thead className="bg-[#F2F6FD] text-base leading-normal font-semibold text-black">
             <tr>
-              <th className="px-4 py-3">Nombre</th>
+              <th className="px-4 py-3">Nombre del paciente</th>
               <th className="hidden px-4 py-3 lg:table-cell">Email</th>
-              <th className="px-4 py-3">Últ. sesión</th>
+              <th className="px-4 py-3">Fecha ultima sesión </th>
               <th className="hidden px-4 py-3 lg:table-cell">Categoría</th>
-              <th className="px-4 py-3">Acción</th>
-              <th
-                className="cursor-pointer px-4 py-3"
-                onClick={() => setIsListVisible(!isListVisible)}
-              >
-                <Image
-                  src={isListVisible ? flechaAbajoLista : flechaArribaLista}
-                  alt="puntos de filtro"
-                  width={22}
-                  height={22}
-                />
-              </th>
+              <th className="px-4 py-3">Acciones</th>
+              {!isDashboardHome && (
+                <th className="px-4 py-3" onClick={() => setIsListVisible(!isListVisible)}>
+                  <Image
+                    src={isListVisible ? flechaAbajoLista : flechaArribaLista}
+                    alt="puntos de filtro"
+                    width={22}
+                    height={22}
+                  />
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="bg-white text-base leading-normal font-normal text-black">
@@ -232,9 +238,11 @@ export default function PatientList({ variant = 'home' }: Props) {
                     </td>
                     <td className="hidden px-4 py-3 lg:table-cell">{patient.email}</td>
                     <td className="px-4 py-3">{patient.lastSession}</td>
-                    <td className="hidden px-4 py-3 lg:table-cell">{patient.category}</td>
-                    <td className="relative px-8 py-3">
+                    {/* <td className="hidden px-4 py-3 lg:table-cell">{patient.category}</td> */}
+                    <td className="hidden px-4 py-3 lg:table-cell">{patient.rangoEtario}</td>
+                    <td className="relative px-5 py-3">
                       <button
+                        className="cursor-pointer"
                         onClick={() =>
                           setOpenMenuId((prev) =>
                             prev === String(patient.id) ? null : String(patient.id)
@@ -245,27 +253,42 @@ export default function PatientList({ variant = 'home' }: Props) {
                       </button>
 
                       {openMenuId === String(patient.id) && (
-                        <div className="absolute right-0 z-10 mt-2 w-40 rounded-md border border-gray-200 bg-white shadow-md">
-                          <ul className="py-1 text-sm text-gray-700">
+                        <div className="absolute right-10 z-10 mt-3 w-2xs rounded-md border border-gray-200 bg-white shadow-md lg:right-32">
+                          <ul className="py-1 text-xl font-normal text-[#000F27E5]">
                             <li>
                               <button
-                                onClick={() => handleRedirect(patient.id)}
-                                className="w-full px-4 py-2 text-left hover:cursor-pointer hover:bg-gray-100"
+                                className="mt-2.5 mb-6 flex w-full cursor-pointer flex-row text-left hover:bg-gray-100"
+                                onClick={() =>
+                                  router.push(`/dashboard/patientprofile/${patient.id}/edit`)
+                                }
                               >
-                                Ver detalles
+                                <div>
+                                  <Image
+                                    src={Edit}
+                                    alt="editar"
+                                    width={22}
+                                    height={22}
+                                    className="mr-5 ml-8 inline-block"
+                                  />
+                                </div>
+                                <div>Editar paciente</div>
                               </button>
                             </li>
                             <li>
-                              <button className="w-full px-4 py-2 text-left hover:bg-gray-100">
-                                Editar
-                              </button>
-                            </li>
-                            <li>
                               <button
-                                className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100"
-                                onClick={() => dispatch(deletePatient(patient.id))}
+                                className="mt-2.5 mb-2.5 flex w-full cursor-pointer flex-row text-left hover:bg-gray-100"
+                                onClick={() => dispatch(toggleFiled(patient.id))}
                               >
-                                Eliminar
+                                <div>
+                                  <Image
+                                    src={Archive}
+                                    alt="archivar"
+                                    width={22}
+                                    height={22}
+                                    className="mr-5 ml-8 inline-block"
+                                  />
+                                </div>
+                                <div>Archivar paciente</div>
                               </button>
                             </li>
                           </ul>
@@ -276,12 +299,20 @@ export default function PatientList({ variant = 'home' }: Props) {
                 )
               )
             ) : (
-              <tr>
-                <td>asdasdasdasdasd</td>
-                <td>asdasdasdasdasd</td>
-                <td>asdasdasdasdasd</td>
-                <td>asdasdasdasdasd</td>
-                <td>asdasdasdasdasd</td>
+              <tr className="bg-white text-base leading-normal font-normal text-white">
+                <td className="px-4 py-3 hover:cursor-pointer">
+                  <div className="flex flex-row items-center gap-2">
+                    <div>IM</div>
+                    <div>Juan</div>
+                  </div>
+                </td>
+                <td className="hidden px-4 py-3 lg:table-cell">juan.paredes@example.com</td>
+                <td className="px-4 py-3">04/01/2025</td>
+                {/* <td className="hidden px-4 py-3 lg:table-cell">{patient.category}</td> */}
+                <td className="hidden px-4 py-3 lg:table-cell">Adulto</td>
+                <td className="relative px-5 py-3">
+                  <button>. . . . .</button>
+                </td>
               </tr>
             )}
           </tbody>
