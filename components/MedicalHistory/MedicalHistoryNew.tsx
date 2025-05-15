@@ -4,7 +4,11 @@ import { useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
+<<<<<<< HEAD
 import { useNewPatientById } from '@/hooks';
+=======
+import { usePatientById } from '@/hooks';
+>>>>>>> parent of a3060fa (Merge branch 'develop' of https://github.com/AdrianEmaST/SmartProject into dev-adrian)
 import { medicalHistoryValidationSchema } from '@/schemas';
 import { addNoteToPatient, addMaterialToPatient } from '@/store/actions/patientActions';
 import { Note /*, Material*/ } from '@/types';
@@ -27,7 +31,7 @@ export default function MedicalHistoryNew({ onSaved }: Props) {
 
   // necesarios para guardar materiales/notas
   const dispatch = useDispatch();
-  const { id } = useNewPatientById();
+  const { id } = usePatientById();
 
   const formik = useFormik<Note>({
     initialValues,
