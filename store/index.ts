@@ -3,7 +3,6 @@ import authReducer from './slices/authSlice';
 import patientReducer from './slices/patientSlice';
 import paginationReducer from './slices/paginationSlice';
 import profileReducer from './slices/profileSlice';
-import userReducer from './slices/userSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +10,6 @@ export const store = configureStore({
     pagination: paginationReducer,
     patients: patientReducer,
     profile: profileReducer,
-    user: userReducer,
   },
 });
 

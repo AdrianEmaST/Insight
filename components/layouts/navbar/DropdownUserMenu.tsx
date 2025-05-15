@@ -3,8 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { forwardRef } from 'react';
-import { UserNav, Logout, AvatarGeneral } from '@/public';
-import { UserNameDrop } from '@/components';
+import { UserNav, Logout, Avatar } from '@/public';
 
 type DropdownUserMenuProps = {
   popupRef: React.RefObject<HTMLDivElement>;
@@ -20,15 +19,10 @@ const DropdownUserMenu = forwardRef<HTMLDivElement, DropdownUserMenuProps>(({ on
       <div className="flex h-full flex-col justify-between">
         <div className="mt-5 flex items-center px-4 py-2">
           {/*<div className="outline-Stroke-Weak/10 relative mr-3 h-12 w-12 rounded-[48px] outline-1 outline-offset-[-1px]" /> */}
-          <Image
-            src={AvatarGeneral}
-            alt="Icon"
-            width={48}
-            height={48}
-            className="mr-2 inline-block"
-          />
+          <Image src={Avatar} alt="Icon" width={48} height={48} className="mr-2 inline-block" />
           <div>
-            <UserNameDrop />
+            <p className="text-base leading-normal font-normal">María José</p>
+            <p className="text-sm leading-tight font-normal">mariajohaynes@gmail.com</p>
           </div>
         </div>
         <hr className="border-[#E6E8F0]" />
