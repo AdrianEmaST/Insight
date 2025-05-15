@@ -42,7 +42,6 @@ export { default as MedicalHistoryHeader } from './MedicalHistory/MedicalHistory
 export { default as MedicalHistoryList } from './MedicalHistory/MedicalHistoryList';
 export { default as MedicalHistoryNew } from './MedicalHistory/MedicalHistoryNew';
 export { default as MedicalHistoryView } from './MedicalHistory/MedicalHistoryView';
-export { default as MedicalHistoryEdit } from './MedicalHistory/MedicalHistoryEdit';
 
 // Pagination
 export { default as Pagination } from './Pagination/Pagination';

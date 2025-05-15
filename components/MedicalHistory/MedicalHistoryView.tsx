@@ -4,11 +4,9 @@ import { Note } from '@/types';
 
 interface Props {
   note: Note;
-  onEdit: () => void;
-  onDelete: () => void;
 }
 
-export default function MedicalHistoryView({ note, onEdit, onDelete }: Props) {
+export default function MedicalHistoryView({ note }: Props) {
   return (
     <div className="px-4 pt-6 md:px-10 md:pt-10">
       <div className="flex justify-between md:flex-row md:items-center md:justify-between">
@@ -17,19 +15,13 @@ export default function MedicalHistoryView({ note, onEdit, onDelete }: Props) {
         </h1>
 
         <div className="flex space-x-4 md:items-center md:space-x-5">
-          <button
-            onClick={onEdit}
-            className="cursor-pointer font-['Roboto'] text-sm font-semibold text-[#0655D5] underline md:text-base"
-          >
+          <button className="font-['Roboto'] text-sm font-semibold text-[#0655D5] underline md:text-base">
             Editar
           </button>
-          <button
-            onClick={onDelete}
-            className="cursor-pointer font-['Roboto'] text-sm font-semibold text-[#0655D5] underline md:text-base"
-          >
+          <button className="font-['Roboto'] text-sm font-semibold text-[#0655D5] underline md:text-base">
             Borrar
           </button>
-          <button className="cursor-pointer">
+          <button>
             <Image src={Download} alt="Descargar" width={24} height={24} />
           </button>
         </div>
