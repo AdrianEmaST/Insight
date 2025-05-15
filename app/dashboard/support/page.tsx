@@ -7,24 +7,23 @@ import Terms from '@/app/dashboard/support/Terms';
 export default function Soporte() {
   const preguntas: { pregunta: string; respuesta: string }[] = [
     {
-      pregunta: '¿Es segura la información que cargo sobre mis pacientes?',
+      pregunta: '¿Cómo puedo recuperar mi contraseña?',
       respuesta:
-        'Sí. Utilizamos estándares de seguridad y encriptación para proteger todos los datos personales y clínicos ingresados en la plataforma.',
+        "Para recuperar tu contraseña, haz clic en 'Olvidé mi contraseña' en la página de inicio de sesión y sigue los pasos indicados.",
     },
     {
-      pregunta: '¿Puedo compartir tareas o notas con mis pacientes desde la app?',
-      respuesta:
-        'Sí. Podés enviar información relevante como tareas, ejercicios o recordatorios directamente desde la app, y el paciente los recibe en su perfil.',
+      pregunta: '¿Cómo puedo actualizar mi información de perfil?',
+      respuesta: "Puedes actualizar tu perfil desde la sección de 'Configuración' en tu cuenta.",
     },
     {
-      pregunta: '¿Mis pacientes pueden ver toda la información que subo?',
+      pregunta: '¿Dónde puedo encontrar los términos y condiciones?',
       respuesta:
-        'No. Solo se comparte la información que el profesional decide enviar al paciente. El resto permanece privado en tu cuenta profesional.',
+        'Los términos y condiciones se encuentran en el pie de página de nuestro sitio web, o puedes consultarlos directamente aquí en esta sección.',
     },
     {
-      pregunta: '¿Hay un costo por usar esta app?',
+      pregunta: '¿Cómo contactarme con soporte?',
       respuesta:
-        'Ofrecemos un plan gratuito con funciones básicas y planes pagos con funcionalidades avanzadas. Consultá nuestros planes en la sección de precios.',
+        'Para contactar con soporte, puedes escribirnos a soporte@insightapp.com o utilizar nuestro chat en vivo disponible en la plataforma.',
     },
     {
       pregunta: '¿Qué hacer si encuentro un error en la plataforma?',

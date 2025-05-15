@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 
@@ -8,16 +10,15 @@ import { InputField } from '@/components';
 import { useSignup } from '@/hooks';
 import { signupValidationSchema } from '@/schemas';
 import { SignupFormData } from '@/types';
-import { Logo as InsightLogo, BackgroundSignup } from '@/public';
 
-import Image from 'next/image';
-import Link from 'next/link';
+import { BackgroundSignup, Logo as InsightLogo } from '@/public';
 
 export default function SignupPage() {
   const router = useRouter();
   const { signup, loading, error } = useSignup();
 
   const [redirecting, setRedirecting] = useState(false);
+
   const isLoading = loading || redirecting;
 
   const initialValues = {
@@ -46,8 +47,11 @@ export default function SignupPage() {
     <div className="flex min-h-screen items-stretch justify-center overflow-hidden bg-white 2xl:items-start">
       {/* Form Section */}
       <div className="flex h-full w-full flex-col lg:h-full lg:w-1/2 lg:flex-row 2xl:mt-20">
+        {/* Logo Mobile */}
+        <div className="mt-9 mb-12 ml-32 px-3 py-5 text-center lg:hidden">
+          <Image src={InsightLogo} width={110} height={34} alt="Insight Logo" />
+        </div>
         {/* Page */}
-        {/* Encabezado */}
         <div className="flex h-full w-full flex-col justify-center bg-white p-5 pt-0 pb-10 lg:mt-10 lg:ml-24 2xl:pl-40">
           {/* Encabezado */}
           <div className="justify-start font-['Roboto'] text-2xl font-bold text-black lg:flex lg:items-start lg:justify-between lg:text-3xl lg:leading-[48px] lg:font-semibold">
@@ -62,7 +66,7 @@ export default function SignupPage() {
           </div>
 
           <div className="mt-6 justify-start font-['Roboto'] text-xl font-semibold text-black lg:mt-6 lg:text-3xl lg:leading-10 lg:font-normal">
-            <h3>Regístrate</h3>
+            <h3>Regístrese</h3>
           </div>
 
           <div className="mt-2.5 w-[350px] justify-start font-['Roboto'] text-base leading-tight font-normal text-black lg:mt-5 lg:w-[448px] lg:text-lg">
@@ -76,8 +80,6 @@ export default function SignupPage() {
             <span className="text-red-600">*</span>
             <span> Datos Requeridos</span>
           </div>
-
-          {/* Formulario */}
 
           {/* Formulario */}
           <form onSubmit={formik.handleSubmit} className="w-96 max-w-full space-y-4 lg:w-[470px]">
@@ -185,6 +187,7 @@ export default function SignupPage() {
         </div>
       </div>
 
+      {/* Background Image */}
       {/* Background */}
       <div className="relative hidden w-1/2 overflow-hidden lg:block lg:max-h-[1024] lg:max-w-[720px] 2xl:max-h-[1080px] 2xl:max-w-[990px]">
         <Image

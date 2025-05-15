@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { useVerification } from '@/hooks/useVerification';
 
 export function useConfirmCode(onSuccess?: () => void) {
@@ -40,26 +41,11 @@ export function useConfirmCode(onSuccess?: () => void) {
     }
   };
 
-  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const paste = e.clipboardData.getData('text').slice(0, 8).toUpperCase();
-    const newCode = paste.split('').slice(0, code.length);
-
-    const paddedCode = [...newCode];
-    while (paddedCode.length < code.length) {
-      paddedCode.push('');
-    }
-
-    setCode(paddedCode);
-  };
-
   return {
     code,
     isComplete,
     isLoading: loading,
     handleChange,
     handleSubmit,
-    setCode, // Añadir la función setCode aquí
-    handlePaste,
   };
 }
