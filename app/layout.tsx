@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Roboto } from 'next/font/google';
+import ClientLoader from '../components/ClientLoader/ClientLoader'; // Asegúrate que esta ruta sea correcta
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -21,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={roboto.variable}>
-      <body className="font-roboto">{children}</body>
+      <body className="font-roboto">
+        <ClientLoader />
+        {children}
+      </body>
     </html>
   );
 }
