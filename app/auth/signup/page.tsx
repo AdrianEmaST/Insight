@@ -62,7 +62,7 @@ export default function SignupPage() {
           </div>
 
           <div className="mt-6 justify-start font-['Roboto'] text-xl font-semibold text-black lg:mt-6 lg:text-3xl lg:leading-10 lg:font-normal">
-            <h3>Regístrese</h3>
+            <h3>Regístrate</h3>
           </div>
 
           <div className="mt-2.5 w-[350px] justify-start font-['Roboto'] text-base leading-tight font-normal text-black lg:mt-5 lg:w-[448px] lg:text-lg">
