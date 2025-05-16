@@ -15,7 +15,7 @@ export default function ClientLoader() {
     // Desactiva el loader después de 3.5 segundos (igual que antes)
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 3500);
 
     // Limpieza si el componente se desmonta o cambia la ruta rápido
     return () => clearTimeout(timer);
