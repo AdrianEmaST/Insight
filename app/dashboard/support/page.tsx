@@ -14,7 +14,7 @@ export default function Soporte() {
     {
       pregunta: '¿Puedo compartir tareas o notas con mis pacientes desde la app?',
       respuesta:
-        'Sí. Podés enviar información relevante como tareas, ejercicios o recordatorios directamente desde la app, y el paciente los recibe en su perfil.',
+        'No, pero tienes la opción de exportarlas para tus pacientes y enviarlas en un PDF.',
     },
     {
       pregunta: '¿Mis pacientes pueden ver toda la información que subo?',
@@ -24,12 +24,12 @@ export default function Soporte() {
     {
       pregunta: '¿Hay un costo por usar esta app?',
       respuesta:
-        'Ofrecemos un plan gratuito con funciones básicas y planes pagos con funcionalidades avanzadas. Consultá nuestros planes en la sección de precios.',
+        'No, usar esta app es totalmente gratuito. Disfruta de todas nuestras funciones sin costo desde el primer día.',
     },
     {
-      pregunta: '¿Qué hacer si encuentro un error en la plataforma?',
+      pregunta: '¿Esta app reemplaza las sesiones presenciales o virtuales?',
       respuesta:
-        'Si encuentras un error, por favor, comunícalo a través de nuestro formulario de soporte o por email a soporte@insightapp.com.',
+        'No. La app es una herramienta complementaria para organizar, registrar y compartir información, pero no reemplaza el espacio terapéutico. ',
     },
   ];
 
