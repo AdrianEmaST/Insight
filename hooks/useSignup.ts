@@ -10,13 +10,20 @@ export function useSignup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const signup = async (formData: SignupFormData): Promise<boolean> => {
+  const signup = async (formData: SignupFormData, useMock: boolean = false): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
     const signupPayload = transformFormDataToSignupPayload(formData);
 
     try {
+      if (useMock) {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        sessionStorage.setItem('signupEmail', signupPayload.email);
+        return true;
+      }
+
       const res = await fetch(`${BACKEND_BASE_URL}/api/User/register`, {
         method: 'POST',
         headers: {
