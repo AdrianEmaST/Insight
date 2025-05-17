@@ -28,12 +28,10 @@ const DropdownUserMenu = forwardRef<HTMLDivElement, DropdownUserMenuProps>(({ on
           />
           <div>
             <span className="flex flex-col text-base leading-normal font-normal">
-      <span>
-        María Pérez
-      </span>
+              <span>María Pérez</span>
 
-      <span className="text-sm leading-tight font-normal">psicologodemo@yopmail.com</span>
-    </span>
+              <span className="text-sm leading-tight font-normal">psicologodemo@yopmail.com</span>
+            </span>
           </div>
         </div>
         <hr className="border-[#E6E8F0]" />
