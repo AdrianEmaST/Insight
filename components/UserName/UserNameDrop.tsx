@@ -14,11 +14,9 @@ const UserName = () => {
 
   return (
     <span className="flex flex-col text-base leading-normal font-normal">
-      <span>
-        {data.name} {data.surname}
-      </span>
+      <span>María Pérez</span>
 
-      <span className="text-sm leading-tight font-normal">{data.email}</span>
+      <span className="text-sm leading-tight font-normal">psicologodemo@yopmail.com</span>
     </span>
   );
 };
