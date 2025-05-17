@@ -2,23 +2,29 @@
 
 import { useState } from 'react';
 
-import { useLogin } from './useLogin';
 import { transformFormDataToSignupPayload } from '@/utils';
-import { RegisterResponse, SignupFormData } from '@/types';
+import { BACKEND_BASE_URL } from '@/config';
+import { SignupFormData } from '@/types';
 
 export function useSignup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { login } = useLogin();
 
-  const signup = async (formData: SignupFormData): Promise<boolean> => {
+  const signup = async (formData: SignupFormData, useMock: boolean = false): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
     const signupPayload = transformFormDataToSignupPayload(formData);
 
     try {
-      const res = await fetch('https://proyecto-foo-production.up.railway.app/api/User/register', {
+      if (useMock) {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        sessionStorage.setItem('signupEmail', signupPayload.email);
+        return true;
+      }
+
+      const res = await fetch(`${BACKEND_BASE_URL}/api/User/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,16 +33,12 @@ export function useSignup() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || 'Error al registrarse');
+        const responseBody = await res.json();
+        throw new Error(responseBody.message || 'Error al registrarse');
       }
 
-      const data: RegisterResponse = await res.json();
-
-      // Si el registro funcionó, inicio sesión
-      if (data.id) {
-        await login(signupPayload.email, signupPayload.password);
-      }
+      // Si el registro funcionó guardo el email temporalmente para verificar cuenta
+      sessionStorage.setItem('signupEmail', signupPayload.email);
 
       return true;
     } catch (err) {
