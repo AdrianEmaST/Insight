@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { forwardRef } from 'react';
 import { UserNav, Logout, AvatarGeneral } from '@/public';
+import { UserNameDrop } from '@/components';
 
 type DropdownUserMenuProps = {
   popupRef: React.RefObject<HTMLDivElement>;
@@ -27,11 +28,7 @@ const DropdownUserMenu = forwardRef<HTMLDivElement, DropdownUserMenuProps>(({ on
             className="mr-2 inline-block"
           />
           <div>
-            <span className="flex flex-col text-base leading-normal font-normal">
-              <span>María Pérez</span>
-
-              <span className="text-sm leading-tight font-normal">psicologodemo@yopmail.com</span>
-            </span>
+            <UserNameDrop />
           </div>
         </div>
         <hr className="border-[#E6E8F0]" />

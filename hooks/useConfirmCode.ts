@@ -34,7 +34,7 @@ export function useConfirmCode(onSuccess?: () => void) {
       return;
     }
 
-    const success = await verify({ email: storedEmail, verificationCode }, true);
+    const success = await verify({ email: storedEmail, verificationCode });
 
     if (success) {
       onSuccess?.();

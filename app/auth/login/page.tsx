@@ -25,7 +25,7 @@ export default function LoginPage() {
     initialValues,
     validationSchema: loginValidationSchema,
     onSubmit: async ({ email, password }) => {
-      const successLogin = await login(email, password, true);
+      const successLogin = await login(email, password);
 
       if (successLogin) {
         setRedirecting(true);
