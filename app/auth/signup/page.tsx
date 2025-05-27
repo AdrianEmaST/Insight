@@ -34,7 +34,7 @@ export default function SignupPage() {
     initialValues,
     validationSchema: signupValidationSchema,
     onSubmit: async (formData: SignupFormData) => {
-      const successSignup = await signup(formData);
+      const successSignup = await signup(formData, true);
 
       if (successSignup) {
         setRedirecting(true);

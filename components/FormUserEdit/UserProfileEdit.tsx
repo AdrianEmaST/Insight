@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store';
-import { fetchUser } from '@/store/slices/userSlice';
+import { useDispatch } from 'react-redux';
+
+import { AppDispatch } from '@/store';
+import { editMockUser } from '@/store/slices/mockUserSlice';
+import { mergeUserProfileToMockUser } from '@/utils/userProfileToMockUser';
 
 interface UserProfile {
   nombre: string;
@@ -14,7 +16,7 @@ interface UserProfile {
 
 interface Props {
   user: UserProfile;
-  onCancel: (success?: boolean) => void; // ← ahora acepta un booleano
+  onCancel: (success?: boolean) => void;
 }
 
 const profileFields = [
@@ -26,26 +28,23 @@ const profileFields = [
 
 const UserProfileEdit = ({ user, onCancel }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
-  const token = useSelector((state: RootState) => state.auth.token);
 
   const [form, setForm] = useState(user);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSave = async () => {
-    if (!token) {
-      setError('Token no disponible');
+    if (!form.nombre || !form.email) {
+      alert('Nombre y email son obligatorios');
       return;
     }
-
     setLoading(true);
-    setError(null);
 
     try {
+
       const [name, surname = ''] = form.nombre.trim().split(' ');
 
       const res = await fetch(
@@ -78,8 +77,10 @@ const UserProfileEdit = ({ user, onCancel }: Props) => {
       } else {
         setError('Error inesperado');
       }
+
     } finally {
       setLoading(false);
+      onCancel(true);
     }
   };
 
@@ -101,8 +102,6 @@ const UserProfileEdit = ({ user, onCancel }: Props) => {
           </div>
         </div>
       ))}
-
-      {error && <p className="text-red-600">{error}</p>}
 
       <div className="mb-5 flex flex-col gap-4">
         <button

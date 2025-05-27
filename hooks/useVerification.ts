@@ -6,17 +6,27 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '@/store/slices/authSlice';
 import { BACKEND_BASE_URL } from '@/config';
 import { VerifyPayload, VerifyResponse } from '@/types';
+import { mockToken } from '@/mocks';
 
 export function useVerification() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const verify = async (data: VerifyPayload): Promise<boolean> => {
+  const verify = async (data: VerifyPayload, useMock: boolean = false): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
     try {
+      if (useMock) {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        dispatch(setToken(mockToken));
+        sessionStorage.setItem('token', mockToken);
+
+        return true;
+      }
+
       const res = await fetch(`${BACKEND_BASE_URL}/api/User/verify-registration`, {
         method: 'POST',
         headers: {

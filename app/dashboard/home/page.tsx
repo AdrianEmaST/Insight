@@ -6,6 +6,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { fetchUser } from '@/store/slices/userSlice';
 import React, { useEffect } from 'react';
 
+
 export default function Home() {
   const dispatch = useAppDispatch();
 
@@ -17,7 +18,9 @@ export default function Home() {
       <div className="lg:ml-10 lg:items-start">
         <h1 className="mt-1.5 mb-1.5 flex flex-row text-3xl leading-10 font-semibold text-black lg:mt-10 lg:mb-2.5 lg:text-3xl lg:leading-[48px] lg:font-semibold">
           <p className="mr-2">Hola</p>
-          <UserNamePsicologo />
+          <span className="text-3xl leading-10 font-semibold text-black lg:text-3xl lg:leading-[48px] lg:font-semibold">
+            Dr.
+          </span>
         </h1>
         <p className="mb-5 block text-sm leading-normal font-normal text-black lg:mb-10 lg:hidden lg:text-base">
           Bienvenido, aquí encontrarás tu lista de pacientes, y <br /> mucho más!

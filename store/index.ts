@@ -39,7 +39,7 @@ if (typeof window !== 'undefined') {
   }
 }
 
-export const store = configureStore({
+xport const store = configureStore({
   reducer: {
     auth: authReducer,
     pagination: paginationReducer,
