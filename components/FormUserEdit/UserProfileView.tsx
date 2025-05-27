@@ -1,17 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '@/store';
+import { fetchUser } from '@/store/slices/userSlice';
+import UserProfileEdit from './UserProfileEdit';
+import { iconEdit, IconCheck } from '@/public';
 import Image from 'next/image';
 
-import UserProfileEdit from './UserProfileEdit';
-import { useAppSelector } from '@/hooks/useMockUser';
-import { iconEdit, IconCheck } from '@/public';
-
 const UserProfileView = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { data: user, loading, error } = useSelector((state: RootState) => state.user);
   const [isEditing, setIsEditing] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const mockUser = useAppSelector((state) => state.mockUser);
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   useEffect(() => {
     if (saved) {
@@ -20,11 +25,15 @@ const UserProfileView = () => {
     }
   }, [saved]);
 
+  if (loading) return <p>Cargando perfil...</p>;
+  if (error) return <p className="text-red-600">Error: {error}</p>;
+  if (!user) return <p>No se encontró el perfil del usuario.</p>;
+
   const userProfile = {
-    nombre: `${mockUser.name} ${mockUser.surname}`,
+    nombre: `${user.name} ${user.surname}`,
     nacionalidad: 'Argentina',
-    email: mockUser.email,
-    titulo: mockUser.title || 'Sin título',
+    email: user.email,
+    titulo: user.title || 'Sin título',
   };
 
   const profileFields = [
@@ -40,7 +49,7 @@ const UserProfileView = () => {
         user={userProfile}
         onCancel={(wasSaved) => {
           setIsEditing(false);
-          if (wasSaved) setSaved(true);
+          if (wasSaved) setSaved(true); // ← activamos mensaje si fue exitoso
         }}
       />
     );
